@@ -1,5 +1,3 @@
-from Client import *
-import time
-a = b'211'
-print(a[2])
-print(b'1'[0])
+import os
+filePath = './files/a.txt'
+print(os.path.basename(filePath))
