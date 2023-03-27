@@ -48,27 +48,13 @@ class MysqlHandler():
 
 
 if __name__ == "__main__":
+    """
     mysql_handler = MysqlHandler()
-    username = "jack"
-    password = "123456"
+    username = ""
+    password = ""
     password = hashlib.sha1((username + password).encode("utf-8")).hexdigest()
     print(password)
-    # res = mysql_handler.query_handler("select * from users where username='%s' and password='%s'" % (username, password))
-    # print(res)
-    # res = hashlib.sha1("tom123456".encode("utf-8")).hexdigest()
-    # print(type(res))
-
+    res = mysql_handler.query_handler("select * from users where username='%s' and password='%s'" % (username, password))
     res = mysql_handler.operate_handler("insert into users(username, password) values('%s', '%s')" % (username, password))
-    print(res)
     """
-    time.sleep(1)
-    res = mysql_handler.query_handler("select * from users")
-    print(res)
-    time.sleep(1)
-    mysql_handler.operate_handler("delete from users")
-    time.sleep(1)
-
-    """
-    res = mysql_handler.query_handler("select * from users")
-    print(res)
 
