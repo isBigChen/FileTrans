@@ -5,6 +5,7 @@ from MysqlHandler import MysqlHandler
 import json
 import hashlib
 import os
+from pymysql.converters import escape_string
 
 SERVER_IP = "0.0.0.0"
 SERVER_PORT = 6666
@@ -85,6 +86,8 @@ class Server(BaseRequestHandler):
         request_data = json.loads(request_data)
         username = request_data['username']
         password = request_data['password']
+        username = escape_string(username)
+        password = escape_string(password)
         # print(username, password)
         password = hashlib.sha1((username + password).encode("utf-8")).hexdigest()
         res = mysql_handler.operate_handler(
@@ -98,17 +101,23 @@ class Server(BaseRequestHandler):
         request_data = json.loads(request_data)
         username = request_data['username']
         password = request_data['password']
+        username = escape_string(username)
+        password = escape_string(password)
         # print(username, password)
         password = hashlib.sha1((username+password).encode("utf-8")).hexdigest()
 
         query_str = "select * from users where username='%s' and password='%s'" % (username, password)
-        # logger.debug(query_str)
-        res = mysql_handler.query_handler(query_str)
-
-        if len(res) >= 1:
-            self.request.send(LOGIN_RESPONSE + b'1')
-        else:
+        logger.debug(query_str)
+        try:
+            res = mysql_handler.query_handler(query_str)
+            if len(res) >= 1:
+                self.request.send(LOGIN_RESPONSE + b'1')
+            else:
+                self.request.send(LOGIN_RESPONSE + b'0')
+        except Exception as e:
             self.request.send(LOGIN_RESPONSE + b'0')
+
+
 
 
 if __name__ == "__main__":

@@ -33,6 +33,9 @@ class Regist(QtWidgets.QWidget):
             self.ui.lineEdit_2.clear()
             self.main.regist_ui.close()
             self.main.login_ui.show()
+            QtWidgets.QMessageBox.information(self, 'information', 'regist success')
+        else:
+            QtWidgets.QMessageBox.information(self, 'information', 'regist failed')
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

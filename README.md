@@ -9,3 +9,12 @@
 - Server命令`python Server.py`
 
 - Client命令`python Main.py`
+
+
+
+防止万能口令
+
+```
+1' or 1=1#
+```
+

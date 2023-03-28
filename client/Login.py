@@ -35,7 +35,8 @@ class Login(QtWidgets.QWidget):
             self.ui.lineEdit_2.clear()
             self.main.login_ui.close()
             self.main.index_ui.show()
-
+        else:
+            QtWidgets.QMessageBox.warning(self, 'warning', 'user or password uncorrect')
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
