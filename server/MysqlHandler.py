@@ -1,7 +1,5 @@
 import pymysql
 from Logger import logger
-import time
-import hashlib
 
 SERVER_IP = "192.168.218.129"
 SERVER_PORT = 3306
@@ -10,7 +8,7 @@ PASSWORD = "123456"
 DATABASE = "file_trans"
 
 
-class MysqlHandler():
+class MysqlHandler:
     def __init__(self):
         self.server_ip = SERVER_IP
         self.server_port = SERVER_PORT
@@ -47,14 +45,4 @@ class MysqlHandler():
             logger.debug(e)
 
 
-if __name__ == "__main__":
-    """
-    mysql_handler = MysqlHandler()
-    username = ""
-    password = ""
-    password = hashlib.sha1((username + password).encode("utf-8")).hexdigest()
-    print(password)
-    res = mysql_handler.query_handler("select * from users where username='%s' and password='%s'" % (username, password))
-    res = mysql_handler.operate_handler("insert into users(username, password) values('%s', '%s')" % (username, password))
-    """
 

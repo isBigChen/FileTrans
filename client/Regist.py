@@ -2,6 +2,25 @@ import sys
 from PySide6 import QtCore, QtWidgets, QtGui
 from ui.regist_ui import Ui_Form
 import json
+from concurrent.futures import ThreadPoolExecutor
+
+
+# 注册多线程
+class RegistThread(QtCore.QObject):
+    finished = QtCore.Signal(bool)
+
+    def __init__(self, client, data):
+        super().__init__()
+        self.client = client
+        self.data = data
+
+    def run(self):
+        regist_result = self.client.regist_request(self.data)
+        if regist_result:
+            self.finished.emit(True)
+        else:
+            self.finished.emit(False)
+
 
 class Regist(QtWidgets.QWidget):
     def __init__(self, main):
@@ -26,16 +45,23 @@ class Regist(QtWidgets.QWidget):
         password = self.ui.lineEdit_2.text()
         request_data = {"username": username, "password": password}
         request_data = json.dumps(request_data)
-        # client socket
-        regist_result = self.main.client.regist_request(request_data)
-        if regist_result:
-            self.ui.lineEdit.clear()
-            self.ui.lineEdit_2.clear()
-            self.main.regist_ui.close()
-            self.main.login_ui.show()
+        # 启动后台线程执行登录操作
+        self.thread_pool = ThreadPoolExecutor()
+        self.regist_thread = RegistThread(self.main.client, request_data)
+        self.regist_thread.finished.connect(self.do_regist_finished)
+        self.thread_pool.submit(self.regist_thread.run)
+
+    # 登录多线程返回触发
+    def do_regist_finished(self, result):
+        if result:
             QtWidgets.QMessageBox.information(self, 'information', 'regist success')
         else:
             QtWidgets.QMessageBox.information(self, 'information', 'regist failed')
+        self.ui.lineEdit.clear()
+        self.ui.lineEdit_2.clear()
+        self.main.regist_ui.close()
+        self.main.login_ui.show()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

@@ -8,6 +8,7 @@ from Client import *
 SERVER_IP = "192.168.218.129"
 SERVER_PORT = 6666
 
+
 class Main():
     def __init__(self):
         super(Main, self).__init__()
